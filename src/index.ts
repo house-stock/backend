@@ -7,5 +7,5 @@ import { Mongo } from './db/mongo/mongo';
 const port = Number(process.env.PORT || 3000);
 app.listen(port, () => {
     logger.info('Express server started on port: ' + port);
-    return Mongo.connect().then(() => console.log("Mongo instance is ok"))
+    return Mongo.connect().then(() => console.log('Mongo instance is ok'))
 });

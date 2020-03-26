@@ -7,6 +7,10 @@ class ProductsRepository {
         return Promise.resolve([])
     }
 
+    getByBarcode(barcodeId: string): Promise<Product | null> {
+        return Mongo.productsCollection.findOne({ _id: barcodeId })
+    }
+
     add(newProduct: Product): Promise<any> {
         const mongoProduct = { _id: newProduct.scanData.data, ...newProduct }
         console.log('Go to insert this document', mongoProduct)

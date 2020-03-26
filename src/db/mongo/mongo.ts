@@ -1,15 +1,14 @@
 import * as mongo from 'mongodb';
 
-const host = "localhost"
-const port = "27017"
-const HouseStockDBName = "house_stock"
-const productsCollection = "products"
+const host = 'localhost'
+const port = '27017'
+const HouseStockDBName = 'house_stock'
+const productsCollection = 'products'
 const url = `mongodb://${host}:${port}`
 
 export class Mongo {
     public static client: mongo.MongoClient;
     public static productsCollection: mongo.Collection<any>
-    constructor() { }
 
     public static connect(): Promise<any> {
         return new Promise<any>((resolve, reject) => {
