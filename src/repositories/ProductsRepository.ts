@@ -4,6 +4,7 @@ import { Mongo } from 'src/db/mongo/mongo';
 class ProductsRepository {
 
     getAll(): Promise<Product[]> {
+        // TODO: do it !
         return Promise.resolve([])
     }
 
@@ -12,7 +13,10 @@ class ProductsRepository {
     }
 
     add(newProduct: Product): Promise<any> {
-        const mongoProduct = { _id: newProduct.scanData.data, ...newProduct }
+        const mongoProduct = {
+            _id: newProduct.scanData.data,
+            ...newProduct
+        }
         console.log('Go to insert this document', mongoProduct)
         return Mongo.productsCollection.insertOne(mongoProduct)
     }
