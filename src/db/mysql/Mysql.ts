@@ -8,6 +8,7 @@ class Mysql {
         Mysql.client = initKnex(knexStringcase({
             client: 'mysql',
             connection: {
+                // debug: ['ComQueryPacket', 'RowDataPacket'],
                 host: '127.0.0.1',
                 user: 'root',
                 password: '1234',
