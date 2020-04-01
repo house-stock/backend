@@ -8,6 +8,10 @@ class ProductsRepository {
         return Promise.resolve([])
     }
 
+    findByBarcode(barcodes: string[]): Promise<Product[]>{
+        return Mongo.productsCollection.find<Product>({ _id : { $in : barcodes } }).toArray()
+    }
+
     getByBarcode(barcodeId: string): Promise<Product | null> {
         return Mongo.productsCollection.findOne({ _id: barcodeId })
     }

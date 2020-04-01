@@ -2,7 +2,7 @@ type ScanData = {
     data: string
 }
 
-type ProductData = {
+export type ProductData = {
     name: string
 }
 export default class Product {

@@ -5,11 +5,11 @@ import { UserProductsFilters } from 'src/services/UserProductService'
 
 class UserProductsRepository {
 
-    getByUserId(userId: number, filters: UserProductsFilters) {
+    getByUserId(userId: number, filters: UserProductsFilters) : Promise<UserProduct[]> {
         return Mysql.client.select()
             .from(Tables.USER_PRODUCTS)
             .where({ userId })
-            .modify(filters.getSortQuery)
+            .modify(filters.buildQueries)
             // TODO : create a run method in to the filter class to run all the filters
     }
 
