@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { BAD_REQUEST, CREATED, OK, INTERNAL_SERVER_ERROR, NOT_FOUND } from 'http-status-codes';
-import UserProductService from 'src/services/UserProductService';
+import UserProductService from 'src/services/userProduct/UserProductService';
 import auth from 'src/middlewares/auth';
 
 const router = Router();

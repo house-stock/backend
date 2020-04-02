@@ -1,15 +1,17 @@
-import Product from 'src/domain/Product';
+import { Product } from 'src/domain/Product';
 import { Mongo } from 'src/db/mongo/mongo';
+import GetAllFilters from '../services/product/filters/GetAllFilters'
+
 
 class ProductsRepository {
 
-    getAll(): Promise<Product[]> {
+    getAll(filters: GetAllFilters): Promise<Product[]> {
         // TODO: do it !
-        return Promise.resolve([])
+        return Mongo.productsCollection.find(filters.buildFind()).toArray()
     }
 
-    findByBarcode(barcodes: string[]): Promise<Product[]>{
-        return Mongo.productsCollection.find<Product>({ _id : { $in : barcodes } }).toArray()
+    findByBarcode(barcodes: string[]): Promise<Product[]> {
+        return Mongo.productsCollection.find<Product>({ _id: { $in: barcodes } }).toArray()
     }
 
     getByBarcode(barcodeId: string): Promise<Product | null> {

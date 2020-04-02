@@ -1,11 +1,11 @@
 import Mysql from 'src/db/mysql/Mysql'
 import Tables from 'src/db/tableNames'
-import { UserProduct } from 'src/domain/Product'
-import { UserProductsFilters } from 'src/services/UserProductService'
+import { UserProduct } from 'src/domain/UserProduct'
+import GetAllUserProductsFilters from 'src/services/userProduct/filters/GetAll'
 
 class UserProductsRepository {
 
-    getByUserId(userId: number, filters: UserProductsFilters) : Promise<UserProduct[]> {
+    getByUserId(userId: number, filters: GetAllUserProductsFilters) : Promise<UserProduct[]> {
         return Mysql.client.select()
             .from(Tables.USER_PRODUCTS)
             .where({ userId })

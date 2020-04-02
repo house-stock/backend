@@ -3,16 +3,16 @@ import { BAD_REQUEST, CREATED, OK, INTERNAL_SERVER_ERROR, NOT_FOUND } from 'http
 import { ParamsDictionary } from 'express-serve-static-core';
 import ProductsRepository from '../repositories/ProductsRepository'
 import { paramMissingError } from '@shared/constants';
-import Product from 'src/domain/Product';
+import { Product } from 'src/domain/Product';
 import Responses from 'src/domain/Responses';
-import UserProductsRepository from 'src/repositories/UserProductsRepository';
-import ProductService from 'src/services/ProductService';
+import ProductService from 'src/services/product/ProductService';
 
 const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
+    const { query } = req
     try {
-        const products = await ProductsRepository.getAll()
+        const products = await ProductService.getAll(query)
         return res.status(OK).json(products);
     } catch (error) {
         console.error('Error getting all the products', error)
