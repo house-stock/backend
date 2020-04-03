@@ -12,6 +12,9 @@ export interface AddUserProduct {
 
 
 class ProductService {
+    updateQuantity(user: any, products: UserProduct[]) {
+        return UserProductsRepository.update(user.id, products)
+    }
     async getAll(user: number, filters: any): Promise<UserProductResponse[]> {
         const userProductFilters = GetAllUserProductsFilters.fromJson(filters)
         const userProducts = await UserProductsRepository.getByUserId(user, userProductFilters)
@@ -30,6 +33,11 @@ class ProductService {
             }
         })
 
+    }
+
+    getAllWithoutProductData(user: number, filters: any): Promise<UserProduct[]> {
+        const userProductFilters = GetAllUserProductsFilters.fromJson(filters)
+        return UserProductsRepository.getByUserId(user, userProductFilters)
     }
 
     async add(product: AddUserProduct): Promise<any> {
