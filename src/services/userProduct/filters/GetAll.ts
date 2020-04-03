@@ -2,6 +2,7 @@ import { QueryBuilder } from 'knex'
 
 export default class GetAllUserProductsFilters {
     sort?: string
+    barcode?: string
     // tslint:disable-next-line: variable-name
     expiration_from?: string
     // tslint:disable-next-line: variable-name
@@ -10,17 +11,29 @@ export default class GetAllUserProductsFilters {
     constructor() {
         this.buildQueries = this.buildQueries.bind(this)
         this.getSortQuery = this.getSortQuery.bind(this)
+        this.getBarcodeQuery = this.getBarcodeQuery.bind(this)
         this.getExpirationRangeQuery = this.getExpirationRangeQuery.bind(this)
     }
 
     buildQueries(queryBuilder: QueryBuilder) {
-        return this.getExpirationRangeQuery(this.getSortQuery(queryBuilder))
+        return this.getExpirationRangeQuery(
+            this.getBarcodeQuery(
+                this.getSortQuery(queryBuilder)
+            )
+        )
     }
 
     getSortQuery(queryBuilder: QueryBuilder): QueryBuilder {
         if (this.sort) {
             const [key, value] = this.sort.split('_')
             queryBuilder.orderBy(key, value)
+        }
+        return queryBuilder
+    }
+
+    getBarcodeQuery(queryBuilder: QueryBuilder): QueryBuilder {
+        if (this.barcode) {
+            queryBuilder.where({ barcode: this.barcode })
         }
         return queryBuilder
     }
@@ -36,11 +49,6 @@ export default class GetAllUserProductsFilters {
     }
 
     static fromJson(json: any) {
-        const object = new GetAllUserProductsFilters()
-        // TODO: Validate the value of the json filters
-        object.sort = json.sort
-        object.expiration_from = json.expiration_from
-        object.expiration_to = json.expiration_to
-        return object
+        return Object.assign(new GetAllUserProductsFilters(), json)
     }
 }
