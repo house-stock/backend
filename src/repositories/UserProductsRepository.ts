@@ -6,14 +6,15 @@ import Knex from 'knex';
 
 class UserProductsRepository {
 
-    update(userId: number, products: UserProduct[]) {
+    updateConsumedQuantity(userId: number, products: UserProduct[]) : Promise<any> {
         return Mysql.client.transaction(trx => {
             const queries: Knex.QueryBuilder[] = [];
             products.forEach(product => {
                 const query = Mysql.client
                     .from(Tables.USER_PRODUCTS)
-                    .where({ userId, barcode: product.barcode, expiration: product.expiration })
+                    .where({ userId, id: product.id })
                     .update({
+                        consumed_quantity: product.consumedQuantity,
                         quantity: product.quantity,
                     })
                     .transacting(trx); // This makes every update be in the same transaction
@@ -32,6 +33,13 @@ class UserProductsRepository {
             .where({ userId })
             .modify(filters.buildQueries)
         // TODO : create a run method in to the filter class to run all the filters
+    }
+
+    getByIds(ids: any[]) {
+        return Mysql.client
+            .select()
+            .from(Tables.USER_PRODUCTS)
+            .whereIn('id', ids)
     }
 
     addProduct(userProduct: UserProduct[]): Promise<any> {

@@ -8,6 +8,7 @@ export async function up(knex: Knex): Promise<any> {
         table.string('barcode')
         table.date('expiration')
         table.integer('quantity')
+        table.integer('consumed_quantity').defaultTo(0)
         table.integer('user_id').unsigned()
         // TODO: add primary key
         table.foreign('user_id').references(`${Tables.USERS}.id`)

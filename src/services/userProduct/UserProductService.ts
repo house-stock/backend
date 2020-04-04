@@ -12,9 +12,6 @@ export interface AddUserProduct {
 
 
 class ProductService {
-    updateQuantity(user: any, products: UserProduct[]) {
-        return UserProductsRepository.update(user.id, products)
-    }
     async getAll(user: number, filters: any): Promise<UserProductResponse[]> {
         const userProductFilters = GetAllUserProductsFilters.fromJson(filters)
         const userProducts = await UserProductsRepository.getByUserId(user, userProductFilters)
@@ -43,7 +40,8 @@ class ProductService {
     async add(product: AddUserProduct): Promise<any> {
         // TODO: get the user id from the session
         // TODO: If the product is already exists, just add the quantity
-        const items: UserProduct[] = product.items.map(item => ({ userId: '1', barcode: product.barcode, quantity: item.quantity, expiration: item.expiration }))
+        // TODO: Think if is good idea move this logic to a use case, to do that, we need change the UI, to send the correct JSON
+        const items: UserProduct[] = product.items.map(item => UserProduct.fromJson({ userId: '1', barcode: product.barcode, ...item }))
         await UserProductsRepository.addProduct(items)
     }
 }
