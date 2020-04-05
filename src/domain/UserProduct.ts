@@ -1,3 +1,7 @@
+export enum USER_PRODUCTS_STATUS {
+    IN_STOCK = 'IN_STOCK',
+    CONSUMED = 'CONSUMED'
+}
 export class UserProduct {
     id?: number
     consumedQuantity: number = 0

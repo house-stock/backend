@@ -1,8 +1,9 @@
 import { QueryBuilder } from 'knex'
-
+import { USER_PRODUCTS_STATUS } from 'src/domain/UserProduct'
 export default class GetAllUserProductsFilters {
     sort?: string
     barcode?: string
+    status: USER_PRODUCTS_STATUS = USER_PRODUCTS_STATUS.IN_STOCK
     // tslint:disable-next-line: variable-name
     expiration_from?: string
     // tslint:disable-next-line: variable-name
@@ -18,7 +19,9 @@ export default class GetAllUserProductsFilters {
     buildQueries(queryBuilder: QueryBuilder) {
         return this.getExpirationRangeQuery(
             this.getBarcodeQuery(
-                this.getSortQuery(queryBuilder)
+                this.getStatusQuery(
+                    this.getSortQuery(queryBuilder)
+                )
             )
         )
     }
@@ -48,6 +51,15 @@ export default class GetAllUserProductsFilters {
         return queryBuilder
     }
 
+    getStatusQuery(queryBuilder: QueryBuilder): QueryBuilder {
+        if (this.status === USER_PRODUCTS_STATUS.IN_STOCK) {
+            queryBuilder.where('quantity', '>', 0)
+        }
+        if (this.status === USER_PRODUCTS_STATUS.CONSUMED) {
+            queryBuilder.where('consumed_quantity', '>', 0)
+        }
+        return queryBuilder
+    }
     static fromJson(json: any) {
         return Object.assign(new GetAllUserProductsFilters(), json)
     }
