@@ -1,3 +1,5 @@
+import DateProvider from './DateProvider'
+
 export enum USER_PRODUCTS_STATUS {
     IN_STOCK = 'IN_STOCK',
     CONSUMED = 'CONSUMED'
@@ -11,11 +13,17 @@ export class UserProduct {
     userId!: string
 
     static fromJson(json: any) {
-        return Object.assign(new UserProduct(), json)
+        const object = Object.assign(new UserProduct(), json)
+        object.expiration = (object.expiration instanceof Date) ? DateProvider.toApiFormat(object.expiration) : object.expiration
+        return object
     }
 
-    clone() : UserProduct {
+    clone(): UserProduct {
         return Object.assign(new UserProduct(), { ...this })
+    }
+
+    addQuantity(quantity: number): void {
+        this.quantity += quantity
     }
 
     markAsConsumed(quantity: number): void {

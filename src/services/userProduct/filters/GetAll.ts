@@ -4,6 +4,7 @@ export default class GetAllUserProductsFilters {
     sort?: string
     barcode?: string
     status: USER_PRODUCTS_STATUS = USER_PRODUCTS_STATUS.IN_STOCK
+    expirations?: string[]
     // tslint:disable-next-line: variable-name
     expiration_from?: string
     // tslint:disable-next-line: variable-name
@@ -60,6 +61,14 @@ export default class GetAllUserProductsFilters {
         }
         return queryBuilder
     }
+
+    getExpirationsQuery(queryBuilder: QueryBuilder): QueryBuilder {
+        if (this.expirations) {
+            queryBuilder.whereIn('expiration', this.expirations)
+        }
+        return queryBuilder
+    }
+
     static fromJson(json: any) {
         return Object.assign(new GetAllUserProductsFilters(), json)
     }

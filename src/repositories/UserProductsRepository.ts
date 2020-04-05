@@ -4,19 +4,33 @@ import { UserProduct } from 'src/domain/UserProduct'
 import GetAllUserProductsFilters from 'src/services/userProduct/filters/GetAll'
 import Knex from 'knex';
 
+interface UpdateFields {
+    consumed_quantity?: number
+    quantity?: number
+}
 class UserProductsRepository {
 
-    updateConsumedQuantity(userId: number, products: UserProduct[]) : Promise<any> {
+    updateConsumedQuantity(userId: number, products: UserProduct[]): Promise<any> {
+        return this._updateQuantities(userId, products, (product) => ({
+            consumed_quantity: product.consumedQuantity,
+            quantity: product.quantity,
+        }))
+    }
+
+    updateQuantity(userId: number, products: UserProduct[]): Promise<any> {
+        return this._updateQuantities(userId, products, (product) => ({
+            quantity: product.quantity,
+        }))
+    }
+
+    _updateQuantities(userId: number, products: UserProduct[], getFieldsToUpdate: (product: UserProduct) => UpdateFields): Promise<any> {
         return Mysql.client.transaction(trx => {
             const queries: Knex.QueryBuilder[] = [];
             products.forEach(product => {
                 const query = Mysql.client
                     .from(Tables.USER_PRODUCTS)
                     .where({ userId, id: product.id })
-                    .update({
-                        consumed_quantity: product.consumedQuantity,
-                        quantity: product.quantity,
-                    })
+                    .update(getFieldsToUpdate(product))
                     .transacting(trx); // This makes every update be in the same transaction
                 queries.push(query);
             });
