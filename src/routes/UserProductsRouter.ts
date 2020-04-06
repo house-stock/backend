@@ -13,7 +13,7 @@ router.get('/', async (req: Request, res: Response) => {
     const { user } = res.locals
     const { query } = req
     try {
-        const products = await UserProductService.getAll(user, query)
+        const products = await UserProductService.getAll(user.id, query)
         return res.status(OK).json(products);
     } catch (error) {
         console.error('Error getting all the products', error)
