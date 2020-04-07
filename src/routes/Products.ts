@@ -6,8 +6,11 @@ import { paramMissingError } from '@shared/constants';
 import { Product } from 'src/domain/Product';
 import Responses from 'src/domain/Responses';
 import ProductService from 'src/services/product/ProductService';
+import auth from 'src/middlewares/auth';
 
 const router = Router();
+
+router.use(auth)
 
 router.get('/', async (req: Request, res: Response) => {
     const { query } = req

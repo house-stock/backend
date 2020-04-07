@@ -6,6 +6,7 @@ export async function up(knex: Knex): Promise<any> {
     return knex.schema.createTable(Tables.USERS, (table)=>{
         table.increments('id')
         table.string('username').notNullable()
+        table.string('name').notNullable()
         table.string('password').notNullable()
     })
 }

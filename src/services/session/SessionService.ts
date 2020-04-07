@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 const accessTokenSecret = ''
 class SessionService {
 
-    generateToken(id: string): string {
+    generateToken(id: number): string {
         return jwt.sign({ id }, accessTokenSecret);
     }
 
