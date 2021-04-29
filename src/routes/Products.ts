@@ -12,14 +12,31 @@ const router = Router();
 
 router.use(auth)
 
-router.get('/', async (req: Request, res: Response) => {
-    const { query } = req
+interface QueryProducts {
+    name: string
+}
+interface BodyProduct {
+    price: number
+}
+interface GetProductsParams extends Request {
+    query: QueryProducts
+    body: BodyProduct
+}
+
+interface ErrorResponse {
+    messsage: string
+}
+
+router.get('/', async (req: GetProductsParams, res: Response<Product[] | ErrorResponse>) => {
+    const { query } = req;
     try {
-        const products = await ProductService.getAll(query)
+        const products: Product[] = await ProductService.getAll(query)
         return res.status(OK).json(products);
     } catch (error) {
         console.error('Error getting all the products', error)
-        return res.status(INTERNAL_SERVER_ERROR).json({});
+        return res.status(INTERNAL_SERVER_ERROR).json({
+            messsage: 'could not get products'
+        });
     }
 });
 
@@ -41,8 +58,11 @@ router.get('/barcode/:barcodeId', async (req: Request, res: Response) => {
         return res.status(INTERNAL_SERVER_ERROR).json({});
     }
 });
+interface A extends Params {
 
-router.post('/', async (req: Request, res: Response) => {
+}
+
+router.post('/', async (req: Request<{}, {}, Product>, res: Response) => {
     const { body } = req
     try {
         await ProductService.add(body)

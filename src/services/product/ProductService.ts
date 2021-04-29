@@ -5,7 +5,7 @@ import GetAllFilters from './filters/GetAllFilters'
 
 class ProductService {
 
-    async getAll(filters: GetAllFilters) {
+    async getAll(filters: any) {
         return ProductsRepository.getAll(GetAllFilters.fromJson(filters))
     }
 

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-const accessTokenSecret = ''
+const accessTokenSecret = '11111'
 class SessionService {
 
     generateToken(id: number): string {
